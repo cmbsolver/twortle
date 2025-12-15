@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Twortle</title>
+    <!-- Bootstrap CSS -->
+    <link href="/assets/bootstrap-5.3.8-dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
+
+    <style>
+        .sidebar-collapsed {
+            width: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Sidebar Link Hover Effect */
+        #sidebar .nav-link:hover {
+            background-color: #0b5ed7; /* Darker blue */
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column vh-100">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-link text-body me-3 text-decoration-none" id="sidebarToggle">
+                    <i class="bi bi-list fs-4"></i>
+                </button>
+                <a class="navbar-brand" href="/">Twortle - {{.Title}}</a>
+            </div>
+            <button class="btn btn-outline-secondary" id="themeToggle" title="Toggle theme">
+                <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Workspace -->
+    <div class="d-flex flex-grow-1 overflow-hidden">
+        <!-- Sidebar -->
+        {{template "partials/sidebar" .}}
+
+        <!-- Scrollable Content Area -->
+        <div class="flex-grow-1 p-4 overflow-auto">
+            {{embed}}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle (Required for some components) -->
+    <script src="/assets/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('sidebar-collapsed');
+        });
+
+        // Theme Toggling Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+
+        // Check local storage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        let currentTheme = savedTheme || systemTheme;
+
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-bs-theme', theme);
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+            
+            if (theme === 'dark') {
+                themeIcon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
+            } else {
+                themeIcon.classList.replace('bi-sun-fill', 'bi-moon-stars-fill');
+            }
+        }
+
+        // Initialize theme
+        setTheme(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+    </script>
+</body>
+</html>
