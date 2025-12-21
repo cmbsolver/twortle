@@ -24,30 +24,22 @@ func GetWordCount(db *gorm.DB) int64 {
 	return count
 }
 
-func GetRandomWord(db *gorm.DB) string {
+func GetRandomWord(db *gorm.DB) Word {
 	var word Word
 	db.Order("RANDOM()").First(&word)
-	return word.WordText
+	return word
 }
 
-func GetAllWords(db *gorm.DB) []string {
+func GetAllWords(db *gorm.DB) []Word {
 	var words []Word
 	db.Find(&words)
-	var result []string
-	for _, word := range words {
-		result = append(result, word.WordText)
-	}
-	return result
+	return words
 }
 
 func GetWordsByLength(db *gorm.DB, length int) []Word {
 	var words []Word
 	db.Where("word_length = ?", length).Find(&words)
 	return words
-}
-
-func AddWord(db *gorm.DB, word string) {
-	db.Create(&Word{WordText: word})
 }
 
 func AddWords(db *gorm.DB, words []Word) {
