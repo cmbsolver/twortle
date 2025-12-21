@@ -37,3 +37,4 @@ go.work.sum
 /twortle
 /.idea/twortle.iml
 /.idea/vcs.xml
+/wordbase.db
