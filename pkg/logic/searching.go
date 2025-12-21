@@ -9,6 +9,7 @@ import (
 func SearchWordleWords(text, contains, exclude []string) ([]tables.Word, error) {
 	dbConn, _ := db.InitSQLiteConnection()
 	words := tables.GetWordsByLength(dbConn, 5)
+	db.CloseConnection(dbConn)
 	return ParseWords(text, contains, exclude, words)
 }
 
