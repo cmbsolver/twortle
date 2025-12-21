@@ -12,4 +12,10 @@ func SetupUIRoutes(app *fiber.App) {
 			"Title": "Home",
 		})
 	})
+
+	app.Get("/solver", func(c *fiber.Ctx) error {
+		return c.Render("solver", fiber.Map{
+			"Title": "Solver",
+		})
+	})
 }

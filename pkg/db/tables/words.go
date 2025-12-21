@@ -40,14 +40,10 @@ func GetAllWords(db *gorm.DB) []string {
 	return result
 }
 
-func GetWordsByLength(db *gorm.DB, length int) []string {
+func GetWordsByLength(db *gorm.DB, length int) []Word {
 	var words []Word
 	db.Where("word_length = ?", length).Find(&words)
-	var result []string
-	for _, word := range words {
-		result = append(result, word.WordText)
-	}
-	return result
+	return words
 }
 
 func AddWord(db *gorm.DB, word string) {

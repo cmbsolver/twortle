@@ -1,0 +1,131 @@
+<div class="container mt-4">
+    <h3>Wordle Solver</h3>
+    <div class="row">
+        <!-- Letter Selection Column -->
+        <div class="col-md-4">
+            <label class="form-label">Select Letter</label>
+            <select id="letter-picker" class="form-select" size="10">
+                <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                <option value="G">G</option><option value="H">H</option><option value="I">I</option>
+                <option value="J">J</option><option value="K">K</option><option value="L">L</option>
+                <option value="M">M</option><option value="N">N</option><option value="O">O</option>
+                <option value="P">P</option><option value="Q">Q</option><option value="R">R</option>
+                <option value="S">S</option><option value="T">T</option><option value="U">U</option>
+                <option value="V">V</option><option value="W">W</option><option value="X">X</option>
+                <option value="Y">Y</option><option value="Z">Z</option>
+            </select>
+            <div class="mt-2 d-grid gap-2">
+                <button class="btn btn-success" onclick="addLetter('contains')">Add to Contains</button>
+                <button class="btn btn-danger" onclick="addLetter('exclude')">Add to Exclude</button>
+            </div>
+        </div>
+
+        <!-- Filter Configuration Column -->
+        <div class="col-md-8">
+            <div class="mb-3">
+                <label class="form-label">Text Pattern (Use % for unknown, e.g., S%%%E)</label>
+                <input type="text" id="pattern" class="form-control form-control-lg text-uppercase" 
+                       placeholder="S%%%E" value="%%%%%" maxlength="5" 
+                       style="letter-spacing: 0.5rem; font-family: monospace;">
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <label>Contains:</label>
+                    <div id="contains-list" class="border p-2 min-vh-10" style="min-height: 50px;"></div>
+                </div>
+                <div class="col-6">
+                    <label>Excluded:</label>
+                    <div id="exclude-list" class="border p-2 min-vh-10" style="min-height: 50px;"></div>
+                </div>
+            </div>
+
+            <div class="mt-2 d-grid gap-2">
+                <button class="btn btn-primary flex-grow-1" onclick="submitSearch()">Search Words</button>
+                <button class="btn btn-secondary flex-grow-1" onclick="resetForm()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <div id="results" class="row row-cols-auto g-2">
+        <!-- Results will be injected here -->
+    </div>
+</div>
+
+<script>
+    let contains = [];
+    let exclude = [];
+
+    function resetForm() {
+        // Reset Arrays
+        contains = [];
+        exclude = [];
+        const originalAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+        // Reset Inputs and UI
+        document.getElementById('pattern').value = "%%%%%";
+        document.getElementById('contains-list').innerHTML = "";
+        document.getElementById('exclude-list').innerHTML = "";
+        document.getElementById('results').innerHTML = "";
+
+        // Rebuild the select list
+        const picker = document.getElementById('letter-picker');
+        picker.innerHTML = originalAlphabet.map(l => `<option value="${l}">${l}</option>`).join('');
+    }
+
+    function addLetter(type) {
+        const picker = document.getElementById('letter-picker');
+        const selectedIndex = picker.selectedIndex;
+
+        if (selectedIndex === -1) return;
+
+        const letter = picker.value;
+
+        if (type === 'contains' && !contains.includes(letter)) {
+            contains.push(letter);
+            renderLabels('contains-list', contains, 'bg-success');
+        } else if (type === 'exclude' && !exclude.includes(letter)) {
+            exclude.push(letter);
+            renderLabels('exclude-list', exclude, 'bg-danger');
+        }
+
+        // Remove the option from the dropdown
+        picker.remove(selectedIndex);
+    }
+
+    function renderLabels(containerId, list, colorClass) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = list.map(l => `<span class="badge ${colorClass} me-1">${l}</span>`).join('');
+    }
+
+    async function submitSearch() {
+        const pattern = document.getElementById('pattern').value.toUpperCase();
+
+        const payload = {
+            text: pattern,
+            contains: contains,
+            exclude: exclude
+        };
+
+        const response = await fetch('/api/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const results = await response.json();
+        const resultsDiv = document.getElementById('results');
+
+        if (results && Array.isArray(results)) {
+            resultsDiv.innerHTML = results.map(w => `
+                <div class="col">
+                    <div class="card p-2 shadow-sm">${w.WordText}</div>
+                </div>
+            `).join('');
+        } else {
+            resultsDiv.innerHTML = '<p class="text-muted">No words found.</p>';
+        }
+    }
+</script>
