@@ -23,3 +23,30 @@ To build and run this application locally, you will need:
     ## Building the Application
 
     ### Using the Build Script (Recommended)
+    The project includes a `build.sh` script that automates building a container image and starting the application. It currently uses `podman`.
+    ```bash
+    ./build.sh
+    ```
+    The application will be accessible at `http://localhost:3000`.
+
+    ### Manual Go Build
+    If you prefer to run the binary directly on your host machine:
+
+    1.  **Install dependencies:**
+        ```bash
+        go mod download
+        ```
+    2.  **Build the binary:**
+        Ensure `CGO_ENABLED=1` is set for SQLite support.
+        ```bash
+        CGO_ENABLED=1 go build -o twortle main.go
+        ```
+    3.  **Run the application:**
+        ```bash
+        ./twortle
+        ```
+
+    ## Development Stack
+    *   **Backend:** Go (using [Fiber](https://gofiber.io/))
+    *   **Database:** SQLite via [GORM](https://gorm.io/)
+    *   **Frontend:** HTML templates with Bootstrap 5
