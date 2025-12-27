@@ -11,30 +11,15 @@ To build and run this application locally, you will need:
 *   **GCC and musl-dev** (or equivalent C build tools) for CGO support, as the project uses `go-sqlite3`.
 *   **Podman** or **Docker** (optional, if you prefer running via containers).
 
-## Building the Application
+    ## Quick Start (Container)
 
-### Using the Build Script (Recommended)
-The project includes a `build.sh` script that automates building a container image and starting the application. It currently uses `podman`.
-The application will be accessible at `http://localhost:3000`.
+    If you just want to run the application using the pre-built image from Quay.io:
 
-### Manual Go Build
-If you prefer to run the binary directly on your host machine:
-
-1.  **Install dependencies:**
     ```bash
-    go mod download
+    podman run -p 3000:3000 quay.io/cmbsolver/twortle
     ```
-2.  **Build the binary:**
-    Ensure `CGO_ENABLED=1` is set for SQLite support.
-    ```bash
-    CGO_ENABLED=1 go build -o twortle main.go
-    ```
-3.  **Run the application:**
-    ```bash
-    ./twortle
-    ```
+    *(Or use `docker` if preferred)*. The application will be accessible at `http://localhost:3000`.
 
-## Development Stack
-*   **Backend:** Go (using [Fiber](https://gofiber.io/))
-*   **Database:** SQLite via [GORM](https://gorm.io/)
-*   **Frontend:** HTML templates with Bootstrap 5
+    ## Building the Application
+
+    ### Using the Build Script (Recommended)
