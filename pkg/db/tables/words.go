@@ -12,6 +12,7 @@ type Word struct {
 	gorm.Model
 	WordText   string
 	WordLength int
+	Played     bool
 }
 
 func (Word) TableName() string {
@@ -24,22 +25,26 @@ func GetWordCount(db *gorm.DB) int64 {
 	return count
 }
 
-func GetRandomWord(db *gorm.DB) Word {
+func GetRandomWordByLength(db *gorm.DB, length int) Word {
 	var word Word
-	db.Order("RANDOM()").First(&word)
-	return word
-}
+	db.
+		Where("word_length = ?", length).
+		Where("played = ?", false).
+		Order("RANDOM()").First(&word)
 
-func GetAllWords(db *gorm.DB) []Word {
-	var words []Word
-	db.Find(&words)
-	return words
+	return word
 }
 
 func GetWordsByLength(db *gorm.DB, length int) []Word {
 	var words []Word
 	db.Where("word_length = ?", length).Find(&words)
 	return words
+}
+
+func GetWordLengths(db *gorm.DB) []int {
+	var lengths []int
+	db.Model(&Word{}).Pluck("word_length", &lengths)
+	return lengths
 }
 
 func AddWords(db *gorm.DB, words []Word) {
@@ -63,6 +68,7 @@ func LoadFile(db *gorm.DB, filename string) {
 				Word{
 					WordText:   upperWord,
 					WordLength: len(strings.Split(upperWord, "")),
+					Played:     false,
 				})
 
 			if len(words) >= 750 {
@@ -75,4 +81,8 @@ func LoadFile(db *gorm.DB, filename string) {
 	if len(words) > 0 {
 		AddWords(db, words)
 	}
+}
+
+func UpdatePlayed(db *gorm.DB, wordId uint) {
+	db.Model(&Word{}).Where("id = ?", wordId).Update("played", true)
 }

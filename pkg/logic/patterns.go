@@ -21,6 +21,30 @@ type Pattern struct {
 	Colors []Color
 }
 
+type StringPattern struct {
+	Length int
+	Colors []string
+}
+
+func BuildStringPatternFromPattern(pattern []Color) StringPattern {
+	stringPattern := make([]string, 0)
+	for i, color := range pattern {
+		switch color {
+		case Grey:
+			stringPattern[i] = "grey"
+			break
+		case Yellow:
+			stringPattern[i] = "yellow"
+			break
+		case Green:
+			stringPattern[i] = "green"
+			break
+		}
+	}
+
+	return StringPattern{Length: len(pattern), Colors: stringPattern}
+}
+
 func BuildPatternFromStringArray(stringPattern []string) []Color {
 	colors := make([]Color, 0)
 	for _, letter := range stringPattern {

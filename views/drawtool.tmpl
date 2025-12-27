@@ -23,7 +23,9 @@
         </div>
 
         <div class="col-md-6">
-            <label class="form-label">Possible Words</label>
+            <label class="form-label d-flex align-items-center gap-2">
+                Possible Words <span id="word-status"></span>
+            </label>
             <div id="draw-results" class="border p-3 bg-light" style="min-height: 400px;">
                 <p class="text-muted">Submit a pattern to see matching words.</p>
             </div>
@@ -125,10 +127,13 @@
 
     function renderResults(patternRows) {
         const resultsDiv = document.getElementById('draw-results');
+        const statusSpan = document.getElementById('word-status');
         resultsDiv.innerHTML = '';
 
+        let rowsWithWords = 0;
         patternRows.forEach((row, index) => {
             if (row.patternWords && row.patternWords.length > 0) {
+                rowsWithWords++;
                 const section = document.createElement('div');
                 section.className = 'mb-3 pb-2 border-bottom';
                 section.innerHTML = `
@@ -140,6 +145,13 @@
                 resultsDiv.appendChild(section);
             }
         });
+
+        // Update status indicator
+        if (rowsWithWords === 6) {
+            statusSpan.innerHTML = '<span class="text-success">✅ All Rows Found</span>';
+        } else {
+            statusSpan.innerHTML = '<span class="text-danger">❌ Incomplete Rows</span>';
+        }
 
         if (resultsDiv.innerHTML === '') {
             resultsDiv.innerHTML = '<p class="text-muted">No words found for the selected patterns.</p>';
