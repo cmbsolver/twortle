@@ -14,6 +14,7 @@
                 </select>
                 <button id="startGameBtn" class="btn btn-primary">Start New Game</button>
             </div>
+            <div id="wordIdDisplay" class="mb-4 text-muted" style="display: none;"></div>
 
             <div id="gameBoard" class="mb-4"></div>
 
@@ -81,6 +82,11 @@
                 wordLength = length;
                 maxRows = parseInt(length) + 1;
                 currentRow = 0;
+
+                const idDisplay = document.getElementById('wordIdDisplay');
+                idDisplay.textContent = `Number: ${wordObj.ID}`;
+                idDisplay.style.display = 'block';
+
                 initBoard();
             });
     });
