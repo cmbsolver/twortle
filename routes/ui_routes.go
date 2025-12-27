@@ -18,4 +18,10 @@ func SetupUIRoutes(app *fiber.App) {
 			"Title": "Solver",
 		})
 	})
+
+	app.Get("/drawtool", func(c *fiber.Ctx) error {
+		return c.Render("drawtool", fiber.Map{
+			"Title": "Drawing Tool",
+		})
+	})
 }

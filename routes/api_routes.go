@@ -9,4 +9,5 @@ import (
 func RegisterAPIRoutes(app *fiber.App) {
 	apiGroup := app.Group("/api")
 	apiGroup.Post("/search", api.SearchWordsHandler)
+	apiGroup.Post("/draw", api.DrawPatternHandler)
 }
