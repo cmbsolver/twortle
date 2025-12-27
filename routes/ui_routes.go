@@ -24,4 +24,11 @@ func SetupUIRoutes(app *fiber.App) {
 			"Title": "Drawing Tool",
 		})
 	})
+
+	app.Get("/play", func(c *fiber.Ctx) error {
+		return c.Render("play", fiber.Map{
+			"Title": "Play Game",
+		})
+	})
+
 }

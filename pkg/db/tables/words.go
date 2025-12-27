@@ -3,6 +3,7 @@ package tables
 import (
 	"bufio"
 	"os"
+	"slices"
 	"strings"
 
 	"gorm.io/gorm"
@@ -41,9 +42,22 @@ func GetWordsByLength(db *gorm.DB, length int) []Word {
 	return words
 }
 
+func GetAllWords(db *gorm.DB) []Word {
+	var words []Word
+	db.Find(&words)
+
+	return words
+}
+
 func GetWordLengths(db *gorm.DB) []int {
 	var lengths []int
-	db.Model(&Word{}).Pluck("word_length", &lengths)
+
+	for _, word := range GetAllWords(db) {
+		if slices.Contains(lengths, word.WordLength) == false {
+			lengths = append(lengths, word.WordLength)
+		}
+	}
+
 	return lengths
 }
 

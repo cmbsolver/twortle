@@ -22,22 +22,22 @@ type Pattern struct {
 }
 
 type StringPattern struct {
-	Length int
-	Colors []string
+	Length int      `json:"length"`
+	Colors []string `json:"colors"`
 }
 
 func BuildStringPatternFromPattern(pattern []Color) StringPattern {
 	stringPattern := make([]string, 0)
-	for i, color := range pattern {
+	for _, color := range pattern {
 		switch color {
 		case Grey:
-			stringPattern[i] = "grey"
+			stringPattern = append(stringPattern, "grey")
 			break
 		case Yellow:
-			stringPattern[i] = "yellow"
+			stringPattern = append(stringPattern, "yellow")
 			break
 		case Green:
-			stringPattern[i] = "green"
+			stringPattern = append(stringPattern, "green")
 			break
 		}
 	}
