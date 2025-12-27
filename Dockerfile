@@ -32,7 +32,6 @@ COPY --from=builder /app/twortle-app .
 # Copy essential runtime directories and files
 COPY --from=builder /app/assets ./assets
 COPY --from=builder /app/views ./views
-COPY --from=builder /app/wordbase.db ./wordbase.db
 
 # Expose the port your app runs on (adjust if different)
 EXPOSE 3000
