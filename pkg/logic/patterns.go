@@ -93,17 +93,36 @@ func GetColorPatternFromArrays(patternWord, word []string) (Pattern, error) {
 
 	colorPattern := make([]Color, len(patternWord))
 
+	patternClone := slices.Clone(patternWord)
+
 	for i, letter := range word {
-		if slices.Contains(patternWord, letter) {
-			colorPattern[i] = Yellow
-		} else {
-			colorPattern[i] = Grey
+		if patternClone[i] == letter {
+			colorPattern[i] = Green
+			patternClone[i] = "|"
 		}
 	}
 
+	isAllGreen := true
+	for _, color := range colorPattern {
+		if color != Green {
+			isAllGreen = false
+		}
+	}
+
+	if isAllGreen {
+		return Pattern{Length: len(patternWord), Colors: colorPattern}, nil
+	}
+
 	for i, letter := range word {
-		if patternWord[i] == letter {
-			colorPattern[i] = Green
+		if idx := slices.Index(patternClone, letter); idx != -1 {
+			colorPattern[i] = Yellow
+
+			// Remove the specific instance found at idx
+			patternClone[idx] = "|"
+		} else {
+			if colorPattern[i] != Green {
+				colorPattern[i] = Grey
+			}
 		}
 	}
 

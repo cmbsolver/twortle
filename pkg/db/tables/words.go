@@ -78,12 +78,15 @@ func LoadFile(db *gorm.DB, filename string) {
 		word := scanner.Text()
 		if word != "" {
 			upperWord := strings.ToUpper(word)
-			words = append(words,
-				Word{
-					WordText:   upperWord,
-					WordLength: len(strings.Split(upperWord, "")),
-					Played:     false,
-				})
+
+			if IsAllLetter(upperWord) {
+				words = append(words,
+					Word{
+						WordText:   upperWord,
+						WordLength: len(strings.Split(upperWord, "")),
+						Played:     false,
+					})
+			}
 
 			if len(words) >= 750 {
 				AddWords(db, words)
@@ -95,6 +98,18 @@ func LoadFile(db *gorm.DB, filename string) {
 	if len(words) > 0 {
 		AddWords(db, words)
 	}
+}
+
+func IsAllLetter(word string) bool {
+	alphaArray := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+	wordArray := strings.Split(word, "")
+
+	for _, letter := range wordArray {
+		if !slices.Contains(alphaArray, letter) {
+			return false
+		}
+	}
+	return true
 }
 
 func UpdatePlayed(db *gorm.DB, wordId uint) {
