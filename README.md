@@ -16,7 +16,7 @@ To build and run this application locally, you will need:
     If you just want to run the application using the pre-built image from Quay.io:
 
     ```bash
-    podman run -p 3000:3000 quay.io/cmbsolver/twortle
+    podman run -d -p 3000:3000 quay.io/cmbsolver/twortle
     ```
     *(Or use `docker` if preferred)*. The application will be accessible at `http://localhost:3000`.
 
