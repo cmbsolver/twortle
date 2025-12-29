@@ -9,55 +9,50 @@
     <link rel="stylesheet" href="/assets/bootstrap-icons-1.13.1/bootstrap-icons.css">
 
     <style>
-        .sidebar-collapsed {
-            width: 0 !important;
-            padding: 0 !important;
-        }
+            /* Override Bootstrap Dark Theme variables for a Dark Blue look */
+            [data-bs-theme="dark"] {
+                --bs-body-bg: #0d1b2a;          /* Deep Dark Blue */
+                --bs-body-color: #e0e1dd;       /* Off-white text */
+                --bs-tertiary-bg: #1b263b;      /* Slightly lighter blue for navbars/cards */
+                --bs-border-color: #415a77;     /* Muted blue borders */
+                --bs-primary: #778da9;          /* Steel blue for primary actions */
+            }
 
-        /* Sidebar Link Hover Effect */
-        #sidebar .nav-link:hover {
-            background-color: #0b5ed7; /* Darker blue */
-            color: white !important;
-        }
-    </style>
-</head>
-<body class="d-flex flex-column vh-100">
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-        <div class="container-fluid">
-            <div class="d-flex align-items-center">
-                <button class="btn btn-link text-body me-3 text-decoration-none" id="sidebarToggle">
-                    <i class="bi bi-list fs-4"></i>
-                </button>
-                <a class="navbar-brand" href="/">Twortle - {{.Title}}</a>
+            .navbar-dark-blue {
+                background-color: #1b263b !important;
+                border-bottom: 1px solid #415a77 !important;
+            }
+
+            .navbar-dark-blue .navbar-brand,
+            .navbar-dark-blue .nav-link {
+                color: #e0e1dd !important;
+            }
+
+            /* Sidebar Link Hover Effect */
+            .navbar .nav-link:hover {
+                background-color: #0b5ed7;
+                color: white !important;
+                border-radius: 0.375rem;
+            }
+        </style>
+    </head>
+    <body class="d-flex flex-column vh-100">
+        <!-- Top Navigation Bar Partial -->
+        {{template "partials/navbar" .}}
+
+        <!-- Main Workspace -->
+        <div class="d-flex flex-grow-1 overflow-hidden">
+            <!-- Scrollable Content Area -->
+            <div class="flex-grow-1 p-4 overflow-auto">
+                {{embed}}
             </div>
-            <button class="btn btn-outline-secondary" id="themeToggle" title="Toggle theme">
-                <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
-            </button>
         </div>
-    </nav>
 
-    <!-- Main Workspace -->
-    <div class="d-flex flex-grow-1 overflow-hidden">
-        <!-- Sidebar -->
-        {{template "partials/sidebar" .}}
+        <!-- Bootstrap JS Bundle -->
+        <script src="/assets/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
 
-        <!-- Scrollable Content Area -->
-        <div class="flex-grow-1 p-4 overflow-auto">
-            {{embed}}
-        </div>
-    </div>
-
-    <!-- Bootstrap JS Bundle (Required for some components) -->
-    <script src="/assets/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
-
-    <script>
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('sidebar-collapsed');
-        });
-
-        // Theme Toggling Logic
+        <script>
+            // Theme Toggling Logic
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;

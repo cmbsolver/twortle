@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark-blue border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Twortle - {{.Title}}</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Changed me-auto to ms-auto to push links to the right -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-3">
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/solver" class="nav-link">Word Helper</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/drawtool" class="nav-link">Drawing Tool</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/play" class="nav-link">Play Game</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://github.com/cmbsolver/twortle" target="_blank" class="nav-link">Source</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://buymeacoffee.com/cmbsolver" target="_blank" class="nav-link">Support</a>
+                </li>
+            </ul>
+            <button class="btn btn-outline-secondary" id="themeToggle" title="Toggle theme">
+                <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+            </button>
+        </div>
+    </div>
+</nav>
