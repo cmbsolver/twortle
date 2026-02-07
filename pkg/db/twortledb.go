@@ -23,7 +23,7 @@ func InitSQLiteConnection() (*gorm.DB, error) {
 // InitSQLiteTables initializes the SQLite database tables
 func InitSQLiteTables(db *gorm.DB) error {
 	// Migrate the schemas
-	dbCreateError := db.AutoMigrate(&tables.Word{})
+	dbCreateError := db.AutoMigrate(&tables.Word{}, &tables.WordSearch{})
 	if dbCreateError != nil {
 		fmt.Printf("Error creating table: %v\n", dbCreateError)
 	}

@@ -31,4 +31,9 @@ func SetupUIRoutes(app *fiber.App) {
 		})
 	})
 
+	app.Get("/word_search", func(c *fiber.Ctx) error {
+		return c.Render("word_search", fiber.Map{
+			"Title": "Word Search",
+		})
+	})
 }
