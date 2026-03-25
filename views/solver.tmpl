@@ -75,6 +75,35 @@
         picker.innerHTML = originalAlphabet.map(l => `<option value="${l}">${l}</option>`).join('');
     }
 
+    function removeLetter(letter, type) {
+        if (type === 'contains') {
+            contains = contains.filter(l => l !== letter);
+            renderLabels('contains-list', contains, 'bg-success', 'contains');
+        } else if (type === 'exclude') {
+            exclude = exclude.filter(l => l !== letter);
+            renderLabels('exclude-list', exclude, 'bg-danger', 'exclude');
+        }
+
+        // Add back to the picker in alphabetical order
+        const picker = document.getElementById('letter-picker');
+        const option = document.createElement('option');
+        option.value = letter;
+        option.text = letter;
+
+        // Find correct insertion point
+        let inserted = false;
+        for (let i = 0; i < picker.options.length; i++) {
+            if (picker.options[i].value > letter) {
+                picker.add(option, i);
+                inserted = true;
+                break;
+            }
+        }
+        if (!inserted) {
+            picker.add(option);
+        }
+    }
+
     function addLetter(type) {
         const picker = document.getElementById('letter-picker');
         const selectedIndex = picker.selectedIndex;
@@ -85,19 +114,25 @@
 
         if (type === 'contains' && !contains.includes(letter)) {
             contains.push(letter);
-            renderLabels('contains-list', contains, 'bg-success');
+            renderLabels('contains-list', contains, 'bg-success', 'contains');
         } else if (type === 'exclude' && !exclude.includes(letter)) {
             exclude.push(letter);
-            renderLabels('exclude-list', exclude, 'bg-danger');
+            renderLabels('exclude-list', exclude, 'bg-danger', 'exclude');
         }
 
         // Remove the option from the dropdown
         picker.remove(selectedIndex);
     }
 
-    function renderLabels(containerId, list, colorClass) {
+    function renderLabels(containerId, list, colorClass, type) {
         const container = document.getElementById(containerId);
-        container.innerHTML = list.map(l => `<span class="badge ${colorClass} me-1">${l}</span>`).join('');
+        container.innerHTML = list.map(l => `
+            <span class="badge ${colorClass} me-1 d-inline-flex align-items-center">
+                ${l}
+                <button type="button" class="btn-close btn-close-white ms-1" style="font-size: 0.5rem;" 
+                        onclick="removeLetter('${l}', '${type}')" aria-label="Remove"></button>
+            </span>
+        `).join('');
     }
 
     async function submitSearch() {
