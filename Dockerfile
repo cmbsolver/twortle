@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM docker.io/library/golang:1.25-alpine AS builder
+FROM docker.io/library/golang:1.26-alpine AS builder
 
 # Install build dependencies for CGO (required if using SQLite)
 RUN apk add --no-cache gcc musl-dev
