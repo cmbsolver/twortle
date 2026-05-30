@@ -6,6 +6,10 @@ import (
 	"twortle/pkg/db/tables"
 )
 
+// SearchWordleWords finds words that match specific criteria:
+// - text: positional requirements (e.g., "A%C%%" means 'A' at pos 0, 'C' at pos 2, '%' is wildcard)
+// - contains: letters that MUST be in the word
+// - exclude: letters that MUST NOT be in the word
 func SearchWordleWords(text, contains, exclude []string) ([]tables.Word, error) {
 	dbConn, _ := db.InitSQLiteConnection()
 	words := tables.GetWordsByLength(dbConn, 5)

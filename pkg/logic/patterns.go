@@ -8,24 +8,31 @@ import (
 	"twortle/pkg/db/tables"
 )
 
+// Color represents the state of a letter in a Wordle guess (Grey, Yellow, Green).
 type Color int
 
 const (
+	// Grey indicates the letter is not in the word.
 	Grey Color = iota
+	// Yellow indicates the letter is in the word but in the wrong position.
 	Yellow
+	// Green indicates the letter is in the word and in the correct position.
 	Green
 )
 
+// Pattern represents a color sequence for a Wordle result.
 type Pattern struct {
 	Length int
 	Colors []Color
 }
 
+// StringPattern is a JSON-friendly representation of a Pattern.
 type StringPattern struct {
 	Length int      `json:"length"`
 	Colors []string `json:"colors"`
 }
 
+// BuildStringPatternFromPattern converts a Color slice into a StringPattern.
 func BuildStringPatternFromPattern(pattern []Color) StringPattern {
 	stringPattern := make([]string, 0)
 	for _, color := range pattern {
@@ -45,6 +52,7 @@ func BuildStringPatternFromPattern(pattern []Color) StringPattern {
 	return StringPattern{Length: len(pattern), Colors: stringPattern}
 }
 
+// BuildPatternFromStringArray converts a slice of color names ("grey", "yellow", "green") into a Color slice.
 func BuildPatternFromStringArray(stringPattern []string) []Color {
 	colors := make([]Color, 0)
 	for _, letter := range stringPattern {
@@ -63,6 +71,7 @@ func BuildPatternFromStringArray(stringPattern []string) []Color {
 	return colors
 }
 
+// GetWordsFromPattern returns all words in the database that match the given pattern when compared to patternWord.
 func GetWordsFromPattern(patternWord string, colorPattern []Color) []string {
 	words := make([]string, 0)
 	dbConn, _ := db.InitSQLiteConnection()
@@ -80,12 +89,14 @@ func GetWordsFromPattern(patternWord string, colorPattern []Color) []string {
 	return words
 }
 
+// GetColorPatternFromWords calculates the Wordle color pattern for a guess compared to a target word.
 func GetColorPatternFromWords(patternWord, word string) (Pattern, error) {
 	patternArray := strings.Split(patternWord, "")
 	wordArray := strings.Split(word, "")
 	return GetColorPatternFromArrays(patternArray, wordArray)
 }
 
+// GetColorPatternFromArrays calculates the Wordle color pattern for a guess compared to a target word, both as string slices.
 func GetColorPatternFromArrays(patternWord, word []string) (Pattern, error) {
 	if len(patternWord) != len(word) {
 		return Pattern{}, errors.New("pattern and word must be of equal length")

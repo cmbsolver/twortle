@@ -10,6 +10,8 @@ import (
 	"github.com/gofiber/template/html/v2"
 )
 
+// main is the entry point of the application. It initializes the database,
+// template engine, Fiber app, and starts the server.
 func main() {
 	// Create and load the database
 	dbConn, _ := db.InitSQLiteConnection()

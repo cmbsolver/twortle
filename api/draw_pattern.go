@@ -6,20 +6,24 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// PatternRow represents a row of a pattern and the words that match it.
 type PatternRow struct {
 	PatternRow   []string `json:"patternRow"`
 	PatternWords []string `json:"patternWords"`
 }
 
+// DrawRequest represents the request body for the DrawPatternHandler.
 type DrawRequest struct {
 	PatternRow  []PatternRow `json:"patternRows"`
 	PatternWord string       `json:"patternWord"`
 }
 
+// DrawResponse represents the response body for the DrawPatternHandler.
 type DrawResponse struct {
 	PatternRows []PatternRow `json:"patternRows"`
 }
 
+// DrawPatternHandler handles requests to find words matching specific patterns.
 func DrawPatternHandler(c *fiber.Ctx) error {
 	var req DrawRequest
 	var response DrawResponse

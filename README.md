@@ -7,7 +7,7 @@ A word puzzle site and helper.
 
 To build and run this application locally, you will need:
 
-*   **Go 1.25** or higher.
+*   **Go 1.26** or higher.
 *   **GCC and musl-dev** (or equivalent C build tools) for CGO support, as the project uses `go-sqlite3`.
 *   **Podman** or **Docker** (optional, if you prefer running via containers).
 

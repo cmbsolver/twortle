@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// RegisterAPIRoutes sets up the API endpoints for the application.
 func RegisterAPIRoutes(app *fiber.App) {
 	apiGroup := app.Group("/api")
 	apiGroup.Post("/search", api.SearchWordsHandler)

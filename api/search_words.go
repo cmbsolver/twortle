@@ -7,12 +7,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// SearchRequest represents a request to search for words matching specific criteria.
 type SearchRequest struct {
 	Text     string   `json:"text"`
 	Contains []string `json:"contains"`
 	Exclude  []string `json:"exclude"`
 }
 
+// SearchWordsHandler handles word search requests with inclusion/exclusion filters.
 func SearchWordsHandler(c *fiber.Ctx) error {
 	var req SearchRequest
 

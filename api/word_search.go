@@ -9,10 +9,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// WordSearchGenerateRequest represents a request to generate a new word search game.
 type WordSearchGenerateRequest struct {
 	WordCount int `json:"wordCount"`
 }
 
+// WordSearchSaveRequest represents a request to save or update a word search game state.
 type WordSearchSaveRequest struct {
 	ID         uint       `json:"id"`
 	Grid       [][]string `json:"grid"`
@@ -21,6 +23,7 @@ type WordSearchSaveRequest struct {
 	WordCount  int        `json:"wordCount"`
 }
 
+// GenerateWordSearchHandler handles requests to generate a new random word search grid.
 func GenerateWordSearchHandler(c *fiber.Ctx) error {
 	var req WordSearchGenerateRequest
 	if err := c.BodyParser(&req); err != nil {
@@ -37,6 +40,7 @@ func GenerateWordSearchHandler(c *fiber.Ctx) error {
 	return c.JSON(game)
 }
 
+// SaveWordSearchHandler handles requests to save a new or update an existing word search game.
 func SaveWordSearchHandler(c *fiber.Ctx) error {
 	var req WordSearchSaveRequest
 	if err := c.BodyParser(&req); err != nil {
@@ -98,6 +102,7 @@ func SaveWordSearchHandler(c *fiber.Ctx) error {
 	})
 }
 
+// DeleteWordSearchHandler handles requests to delete a word search game by its ID.
 func DeleteWordSearchHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 	dbConn, _ := db.InitSQLiteConnection()
@@ -114,6 +119,7 @@ func DeleteWordSearchHandler(c *fiber.Ctx) error {
 	})
 }
 
+// ListWordSearchesHandler returns a list of all saved word search games.
 func ListWordSearchesHandler(c *fiber.Ctx) error {
 	dbConn, _ := db.InitSQLiteConnection()
 	defer db.CloseConnection(dbConn)
@@ -128,6 +134,7 @@ func ListWordSearchesHandler(c *fiber.Ctx) error {
 	return c.JSON(searches)
 }
 
+// GetWordSearchHandler retrieves a single word search game by its ID.
 func GetWordSearchHandler(c *fiber.Ctx) error {
 	id := c.Params("id")
 	dbConn, _ := db.InitSQLiteConnection()

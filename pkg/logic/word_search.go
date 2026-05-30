@@ -6,12 +6,14 @@ import (
 	"twortle/pkg/db/tables"
 )
 
+// WordSearchGame represents the state and data for a word search game.
 type WordSearchGame struct {
 	Grid       [][]string `json:"grid"`
 	Words      []string   `json:"words"`
 	FoundWords []string   `json:"foundWords"`
 }
 
+// GenerateWordSearch creates a new word search game with the specified number of random words.
 func GenerateWordSearch(wordCount int) WordSearchGame {
 	dbConn, _ := db.InitSQLiteConnection()
 	defer db.CloseConnection(dbConn)

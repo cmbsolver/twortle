@@ -5,6 +5,7 @@ import (
 	"twortle/pkg/db/tables"
 )
 
+// GetWordForGame retrieves a random word of the specified length from the database.
 func GetWordForGame(length int) tables.Word {
 	dbConn, _ := db.InitSQLiteConnection()
 	defer db.CloseConnection(dbConn)
@@ -12,6 +13,8 @@ func GetWordForGame(length int) tables.Word {
 	return word
 }
 
+// CheckWordPattern compares a guess against the target word and returns the color pattern.
+// If the guess is correct, it updates the word's played status in the database.
 func CheckWordPattern(guess string, word tables.Word) (StringPattern, bool) {
 	isAllMatch := true
 	result, _ := GetColorPatternFromWords(word.WordText, guess)
@@ -31,6 +34,7 @@ func CheckWordPattern(guess string, word tables.Word) (StringPattern, bool) {
 	return BuildStringPatternFromPattern(result.Colors), isAllMatch
 }
 
+// GetWordLengths returns a list of all unique word lengths available in the database.
 func GetWordLengths() []int {
 	dbConn, _ := db.InitSQLiteConnection()
 	defer db.CloseConnection(dbConn)
